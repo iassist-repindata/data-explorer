@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Download File
       run: |
-        curl http://docs.google.com/spreadsheets/d/1sdOV2YBS3Rw5HGwN7Tx8VYpxyyGS5gkfNU3-Qx9wdDI/export?format=tsv&gid=2066634449 --output ./entryform/file.tsv
+        curl https://docs.google.com/spreadsheets/d/1sdOV2YBS3Rw5HGwN7Tx8VYpxyyGS5gkfNU3-Qx9wdDI/export?format=tsv -o ./entryform/file.tsv
       working-directory: ${{ github.workspace }}
 
     - name: Commit and Push Changes
