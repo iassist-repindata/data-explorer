@@ -11,5 +11,5 @@ jobs:
     - uses: actions/checkout@v4
     - name: Download File
       run: |
-        curl https://bausteine-fdm.de/article/download/8910/8661/22259 --output ./file.pdf
+        curl -X GET https://bausteine-fdm.de/article/download/8910/8661/22259 --output ./file.pdf
       working-directory: ${{ github.workspace }}
