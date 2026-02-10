@@ -1,0 +1,15 @@
+name: Download File
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Download File
+      run: |
+        curl https://bausteine-fdm.de/article/download/8910/8661/22259 --output ./file.pdf
+      working-directory: ${{ github.workspace }}
