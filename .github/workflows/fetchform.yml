@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Download File
       run: |
-        curl -L http://docs.google.com/spreadsheets/d/1sdOV2YBS3Rw5HGwN7Tx8VYpxyyGS5gkfNU3-Qx9wdDI/export?format=tsv --output entryform/file.tsv
+        curl -L http://docs.google.com/spreadsheets/d/1sdOV2YBS3Rw5HGwN7Tx8VYpxyyGS5gkfNU3-Qx9wdDI/export?format=tsv --output /entryform/file.tsv
       working-directory: ${{ github.workspace }}
     - name: Commit and Push Changes
       run: |
