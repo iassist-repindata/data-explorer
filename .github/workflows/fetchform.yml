@@ -1,12 +1,10 @@
-name: Download File
+name: Download File 2
 
 permissions:
   contents: write
 
 on:
-  schedule:
-    - cron: "0 15 * * *"
-
+  workflow_dispatch: 
 jobs:
   build:
     runs-on: ubuntu-latest
