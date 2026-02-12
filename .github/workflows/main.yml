@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Download File
       run: |
         curl -L http://docs.google.com/spreadsheets/d/1sdOV2YBS3Rw5HGwN7Tx8VYpxyyGS5gkfNU3-Qx9wdDI/export?format=tsv --output ./file.tsv
