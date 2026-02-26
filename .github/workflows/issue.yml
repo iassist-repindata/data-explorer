@@ -1,0 +1,16 @@
+name: Add Issue
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  add-issue:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - name: Add Issue
+      run: |
+        echo "Adding issue to repository..."
+        cat tsv-validation-failed.md >> $GITHUB_EVENT_PATH
+
