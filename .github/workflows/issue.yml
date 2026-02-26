@@ -1,9 +1,8 @@
 name: Add Issue
 
 on:
-  issues:
-    types: [opened]
-
+  workflow_dispatch
+  
 jobs:
   add-issue:
     runs-on: ubuntu-latest
