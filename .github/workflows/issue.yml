@@ -11,5 +11,5 @@ jobs:
     - name: Add Issue
       run: |
         echo "Adding issue to repository..."
-        cat tsv-validation-failed.md >> $GITHUB_EVENT_PATH
+        cat ISSUES_TEMPLATE/tsv-validation-failed.md >> $GITHUB_EVENT_PATH
 
