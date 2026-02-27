@@ -1,7 +1,9 @@
 name: Add Issue
 
 on:
-  workflow_dispatch
+  push:
+    paths:
+      - autosave/form-snaphot.tsv
   
 jobs:
   add-issue:
