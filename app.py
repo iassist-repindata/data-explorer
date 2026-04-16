@@ -92,7 +92,7 @@ app_ui = ui.page_sidebar(
                                       "Select columns to display",
                                       cv_columns,
                                       multiple=True,
-                                      selected=["Title","PubDate"],
+                                      selected=["Title","PubDate","URL"],
                                       width='45%'
                                   ),
                                   ui.download_button("download_filtered", label="Download filtered data as .csv", class_="btn-primary"),
@@ -104,13 +104,16 @@ app_ui = ui.page_sidebar(
                     ),
                     
                     ),
-        ui.nav_panel("About this page", "Panel C content"),
+        ui.nav_panel("About this page", 
+                     ui.card(
+                         "This website was created by the LGBTQ+ Data subgroup of the IASSIST 'Representation in Data' Interest Group (https://iassistdata.org/community/representation-in-data-ig/)."
+                         )),
     
         id="tab"
     ),
     theme=shinyswatch.theme.lux,
     window_title="Representation in data",
-    title=ui.tags.div(ui.tags.p(ui.tags.img(src="logo.png", height="30px"), "   IASSIST Representation in Data Dashboard")),
+    title=ui.tags.div(ui.tags.p(ui.tags.img(src="logo.png", height="40px"), "   IASSIST Representation in Data Explorer")),
     )
 
 def server(input, output, session):
