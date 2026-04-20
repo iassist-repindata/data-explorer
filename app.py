@@ -105,9 +105,8 @@ app_ui = ui.page_sidebar(
                     
                     ),
         ui.nav_panel("About this page", 
-                     ui.card(
-                         "This website was created by the LGBTQ+ Data subgroup of the IASSIST 'Representation in Data' Interest Group (https://iassistdata.org/community/representation-in-data-ig/)."
-                         )),
+                     ui.card(ui.tags.p("Representation in Data aims to identify data sources for minority populations by global region and country. The Data Explorer allows users to explore these sources by keyword, language, resource type, and more."),
+                             ui.tags.div("Report broken links to"),ui.tags.a("repindata@iassistdata.org", href="mailto:repindata@iassist.org"))),
     
         id="tab"
     ),
