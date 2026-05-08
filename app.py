@@ -4,6 +4,7 @@ import plotly.express as px
 import numpy as np
 import io
 from shared import app_dir, lgbtq, cv_columns,cv_resourceType, cv_producer, cv_themes, cv_subject, cv_country, cv_region, cv_adminLevel, cv_unitAnalysis,cv_longitudinal, cv_language, cv_restrictions, pub_min, pub_max
+from utils.website_texts import about_text
 
 from shinywidgets import output_widget, render_plotly
 from shiny import App, reactive, render, ui
@@ -40,7 +41,7 @@ app_ui = ui.page_sidebar(
             min=pub_min, 
             max=pub_max,
             value=[pub_min,pub_max],
-            sep = None,
+            sep = "",
             ),        
 
         ui.input_selectize(
@@ -59,7 +60,11 @@ app_ui = ui.page_sidebar(
         ),
         bg="#f8f8f8"),  
     ui.navset_pill(  
-        ui.nav_panel("Overview", 
+        ui.nav_panel("About this page",
+                      
+                     ui.card(about_text)),
+        ui.nav_panel("Overview",
+                      
                      ui.layout_column_wrap(
                          ui.value_box("Number of resources in selection",ui.output_text("selected_entries")),
                          
@@ -104,9 +109,7 @@ app_ui = ui.page_sidebar(
                     ),
                     
                     ),
-        ui.nav_panel("About this page", 
-                     ui.card(ui.tags.p("Representation in Data aims to identify data sources for minority populations by global region and country. The Data Explorer allows users to explore these sources by keyword, language, resource type, and more."),
-                             ui.tags.div("Report broken links to"),ui.tags.a("repindata@iassistdata.org", href="mailto:repindata@iassistdata.org"))),
+        
     
         id="tab"
     ),
