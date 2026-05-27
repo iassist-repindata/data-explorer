@@ -3,8 +3,8 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 import io
-from shared import app_dir, lgbtq, cv_columns,cv_resourceType, cv_producer, cv_themes, cv_subject, cv_country, cv_region, cv_adminLevel, cv_unitAnalysis,cv_longitudinal, cv_language, cv_restrictions, pub_min, pub_max
-from utils.website_texts import about_text
+from shared import app_dir, lgbtq, data_dicty, cv_columns,cv_resourceType, cv_producer, cv_themes, cv_subject, cv_country, cv_region, cv_adminLevel, cv_unitAnalysis,cv_longitudinal, cv_language, cv_restrictions, pub_min, pub_max
+from utils.website_texts import about_text, data_dictionary
 
 from shinywidgets import output_widget, render_plotly
 from shiny import App, reactive, render, ui
@@ -60,7 +60,7 @@ app_ui = ui.page_sidebar(
         ),
         bg="#f8f8f8"),  
     ui.navset_pill(  
-        ui.nav_panel("About this page",
+        ui.nav_panel("Welcome",
                       
                      ui.card(about_text)),
         ui.nav_panel("Overview",
@@ -109,6 +109,16 @@ app_ui = ui.page_sidebar(
                     ),
                     
                     ),
+        ui.nav_panel("About the data explorer",
+                     ui.layout_columns(
+                         ui.card(data_dictionary,
+                                 ui.output_data_frame("data_dict")
+                             
+                         )
+                         
+                     ),
+
+        ),
         
     
         id="tab"
@@ -288,5 +298,12 @@ def server(input, output, session):
         with io.BytesIO() as buf:
                 data.to_csv(buf,header=True, index=False,encoding="utf-8")
                 yield buf.getvalue() 
+
+# create the data dictionary spreadsheet
+    @render.data_frame
+    def data_dict():
+        return render.DataGrid(data_dicty)
+
+
 
 app = App(app_ui, server, static_assets=app_dir / "www")
