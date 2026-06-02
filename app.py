@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 import io
-from shared import app_dir, lgbtq, data_dicty, cv_columns,cv_resourceType, cv_producer, cv_themes, cv_subject, cv_country, cv_region, cv_adminLevel, cv_unitAnalysis,cv_longitudinal, cv_language, cv_restrictions, pub_min, pub_max
+from shared import app_dir, lgbtq, data_dicty, cv_columns,cv_resourceType, cv_themes, cv_region, cv_language, pub_min, pub_max
 from utils.website_texts import about_text, data_dictionary
 
 from shinywidgets import output_widget, render_plotly
@@ -302,7 +302,10 @@ def server(input, output, session):
 # create the data dictionary spreadsheet
     @render.data_frame
     def data_dict():
-        return render.DataGrid(data_dicty)
+        data_dicty["Link"] = [
+            ui.tags.a("Representation in Data",href=f"https://docs.google.com/spreadsheets/d/1b9ODZxyBzDPfwono_FNJ0N-M3yXlWP8TXbCZXAeVqrQ/edit?{sheet}",target="_blank") for sheet in data_dicty["Link to CV"]
+            ]
+        return render.DataGrid(data_dicty[["Field Names","Description"]], width="100%")
 
 
 
