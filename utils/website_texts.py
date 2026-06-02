@@ -11,6 +11,6 @@ about_text = TagList(
 
 data_dictionary = TagList(
     tags.div(tags.p("The IASSIST Representation in Data Explorer Data Dictionary is published as a ",tags.a("Google Sheets file", href="https://docs.google.com/spreadsheets/d/1b9ODZxyBzDPfwono_FNJ0N-M3yXlWP8TXbCZXAeVqrQ/edit?usp=sharing", target="_blank"), ", which contains information for understanding the resources and information or metadata about the resources.")),
-    tags.p("The field names used in the data explorer are described below.")
+    tags.p("The field names used in the data explorer are described below. Empty fields or fields marked with 'NA' are either not applicable, no data was available, or they weren't filled by the curators.")
     
 )

@@ -1,25 +1,25 @@
-﻿Field Names;Description;Single or Multiple Terms;Controlled Vocabulary;Required Field;Field Not within Dataset
-Title;Title of the resource;N/A;N/A;Yes;N/A
-URL;ULR, DOI or permanent link (if available) for accessing the resource;N/A;N/A;Yes;N/A
-ProDisURL;Additional ULR, DOI or permanent link for the producer or distributor;N/A;N/A;No;LGBTQ, Indigeneous
-ResourceType;Type of the data or resource, such as a dataset, project, geospatial, or guide. For more information, go to the linked ResourceType sheet.;Multiple;ResourceType;Yes;N/A
-Citation;Citation for publication or report (any style provided) or a resource with an available citation;N/A;N/A;No;Anti-Racism
-PubDate;Publication or distribution date in year (YYYY);Singe;N/A;No;Anti-Racism
-CollectDateStart;Start date of data collection period in year (YYYY);Single;N/A;No;N/A
-CollectDateEnd;End date of data collection period in year (YYYY). For a longitudinal study that is still ongoing this is blank.;Single;N/A;No;N/A
-Producer;Person or organization that authored, collected, compiled, produced, sponsored or created the resource. A resource may have an entry for a Producer or a Distributor or for both. For more information, go to the linked Producer or Distributor sheet.;Multiple;Producer or Distributor;No;N/A
-Distributor;Person or organization that is hosting, publishing, disseminating, or giving access to the resource, such as a repository. For more information, go to the linked Producer or Distributor sheet.;Single;Producer or Distributor;No;N/A
-Description;Description of the the resource;N/A;N/A;No;N/A
-TimeSpan;Time span that is covered or the date coverage.;N/A;Time span can be by year(s) (YYYY), or from a start year to the present (YYYY-present), or by cycle.;No;N/A
-Longitudinal;Data that is collected over time (longitudinal) and can include times series and studies with multiple waves.;Single;"Values are ""Yes"" (Longitudinal), ""No"" (Not longitudinal), ""Unknown"", or ""Blank"" (not verified or applicable).";No;N/A
-DataMethodType;The data type or method of data collection is quantitative (numeric, survey, etc.), qualitative (text, interview, etc.) or both (mixed).;Single;"Values are ""Qualitative"", ""Quantitative"", or ""Mixed ""(both qualitative and quanitative).";No;Anti-Racism
-Country;Country, area (native terrorities), or group of countries (e.g. European Union) that is covered by the data or resource. For more information, go to the linked Country sheet.;Multiple;Country;;
-GeographicRegion;Name of the geographic region that is covered or All Regions for global coverage. For more information, go to the linked GeographicRegion sheet.;Multiple;GeographicRegion;No;N/A
-AdminLevel;Administrative or governance level or unit, such as village, district, state, or nation. Use for Data only. For more information, go to the linked AdminLevel sheet.;Multiple;AdminLevel;No;N/A
-UnitAnalysis;The unit for which the data or its variables can be analyzed or the unit of observation (if available). For more information, go to the linked UnitAnalysis sheet.;Multiple;UnitAnalysis;No;N/A
-Language;The language of the data, documentation or resource type. For more information, go to the linked Language sheet.;Multiple;Language;No;N/A
-Themes;One or several themes are assigned to a resource by IASSIST members based on the focus and scope of the dataset. For more information, go to the linked Themes sheet.;Multiple;Themes;Yes;N/A
-Subjects;Subjects are terms assigned by IASSIST members for what the data and resource are about that are relevant for the dataset themes. For more information, go to the linked Subjects sheet.;Multiple;Subjects;No;N/A
-Restrictions;Some data may be restricted in use. This could mean that the data are available only through member organization, by paid subscription, or the user needs to meet certain conditions (other than registration) to use the data.;Single;There are three values: Yes=There is restriction for part or the entire data or resource. No=Open access, public domain, or no restriction other than registration. Blank=Not applicable or information is not available nor verified.;No;N/A
-Notes;Open field for any useful links, notes or comments, and they can provide more information for information entered for a field.;N/A;N/A;No;N/A
-AddedUpdated;Date when entry was added or last updated. Format is YYYY-MM-DD.;Single;N/A;No;N/A
+﻿Field Names;Description;Link to CV
+Title;Title of the resource;N/A
+URL;URL, DOI or permanent link (if available) for accessing the resource;N/A
+ProDisURL;Additional URL, DOI or permanent link for the producer or distributor;N/A
+ResourceType;Type of the data or resource, such as a dataset, project, geospatial, or guide. For more information, go to the linked ResourceType sheet.;gid=2086916291#gid=2086916291
+Citation;Citation for publication or report (any style provided) or a resource with an available citation;N/A
+PubDate;Publication or distribution date in year (YYYY);N/A
+CollectDateStart;Start date of data collection period in year (YYYY);N/A
+CollectDateEnd;End date of data collection period in year (YYYY). For a longitudinal study that is still ongoing this is blank.;N/A
+Producer;Person or organization that authored, collected, compiled, produced, sponsored or created the resource. A resource may have an entry for a Producer or a Distributor or for both. For more information, go to the linked Producer or Distributor sheet.;gid=1673942145#gid=1673942145
+Distributor;Person or organization that is hosting, publishing, disseminating, or giving access to the resource, such as a repository. For more information, go to the linked Producer or Distributor sheet.;gid=1673942145#gid=1673942145
+Description;Description of the the resource;N/A
+TimeSpan;Time span that is covered or the date coverage.;N/A
+Longitudinal;Data that is collected over time (longitudinal) and can include times series and studies with multiple waves.;N/A
+DataMethodType;The data type or method of data collection is quantitative (numeric, survey, etc.), qualitative (text, interview, etc.) or both (mixed).;N/A
+Country;Country, area (native terrorities), or group of countries (e.g. European Union) that is covered by the data or resource. For more information, go to the linked Country sheet.;gid=1131021598#gid=1131021598
+GeographicRegion;Name of the geographic region that is covered or All Regions for global coverage. For more information, go to the linked GeographicRegion sheet.;gid=990806825#gid=990806825
+AdminLevel;Administrative or governance level or unit, such as village, district, state, or nation. Use for Data only. For more information, go to the linked AdminLevel sheet.;gid=424615768#gid=424615768
+UnitAnalysis;The unit for which the data or its variables can be analyzed or the unit of observation (if available). For more information, go to the linked UnitAnalysis sheet.;gid=63348179#gid=63348179
+Language;The language of the data, documentation or resource type. For more information, go to the linked Language sheet.;gid=1322680844#gid=1322680844
+Themes;One or several themes are assigned to a resource by IASSIST members based on the focus and scope of the dataset. For more information, go to the linked Themes sheet.;gid=1843744120#gid=1843744120
+Subjects;Subjects are terms assigned by IASSIST members for what the data and resource are about that are relevant for the dataset themes. For more information, go to the linked Subjects sheet.;gid=549587373#gid=549587373
+Restrictions;Some data may be restricted in use. This could mean that the data are available only through member organization, by paid subscription, or the user needs to meet certain conditions (other than registration) to use the data.;N/A
+Notes;Open field for any useful links, notes or comments, and they can provide more information for information entered for a field.;N/A
+AddedUpdated;Date when entry was added or last updated. Format is YYYY-MM-DD.;N/A
