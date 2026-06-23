@@ -19,7 +19,7 @@ ICONS = {
 
 app_ui = ui.page_sidebar(
     ui.sidebar(
-        ui.include_css("www/style.css"),
+        ui.include_css(app_dir / "www/style.css"),
         
         ui.input_selectize(
             "select_themes",
