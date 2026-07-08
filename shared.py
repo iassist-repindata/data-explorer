@@ -4,7 +4,7 @@ import pandas as pd
 
 app_dir = Path(__file__).parent
 lgbtq = pd.read_csv(app_dir / "data-prep/IASSIST_LGBTIQ_Data.txt", delimiter = "\t", dtype={"PubDate":"Int64", "CollectDateStart":"Int64","CollectDateEnd":"Int64"})
-antir = pd.read_csv("data-prep/IASSIST_Anti_Racism_Data.tsv", delimiter="\t", encoding="utf8", dtype={"PubDate":"Int64", "CollectDateStart":"Int64","CollectDateEnd":"Int64"})
+antir = pd.read_csv(app_dir / "data-prep/IASSIST_Anti_Racism_Data.tsv", delimiter="\t", encoding="utf8", dtype={"PubDate":"Int64", "CollectDateStart":"Int64","CollectDateEnd":"Int64"})
 
 data_dicty = pd.read_csv(app_dir / "data_dictionary.csv", delimiter=";", encoding="utf8")
 
