@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 import io
-from shared import app_dir, lgbtq, data_dicty, cv_columns,cv_resourceType, cv_themes, cv_region, cv_language, pub_min, pub_max
+from shared import app_dir, df_repindata, data_dicty, cv_collection, cv_columns,cv_resourceType, cv_themes, cv_region, cv_language, pub_min, pub_max
 from utils.website_texts import about_text, data_dictionary
 
 from shinywidgets import output_widget, render_plotly
@@ -58,15 +58,20 @@ app_ui = ui.page_sidebar(
             cv_resourceType,
             selected="All"
         ),
+        ui.input_selectize(
+            "select_collect",
+            "Select a Collection",
+            cv_collection,
+            selected="All"
+        ),
         bg="#f8f8f8"),  
     ui.navset_pill(  
-        ui.nav_panel("Welcome",
-                      
-                     ui.card(about_text)),
         ui.nav_panel("Overview",
-                      
                      ui.layout_column_wrap(
-                         ui.value_box("Number of resources in selection",ui.output_text("selected_entries")),
+                         ui.card(about_text),
+                         fill=False,), 
+                     ui.layout_column_wrap(
+                         ui.value_box("Number of resources in this selection",ui.output_text("selected_entries")),
                          
                     fill=False,),
                     ui.layout_column_wrap(
@@ -129,41 +134,59 @@ app_ui = ui.page_sidebar(
     )
 
 def server(input, output, session):
+    # internal links between tabs
+    @reactive.effect
+    @reactive.event(input.goto_explore)
+    def _():
+        ui.update_navs("tab", selected="Explore resources")
+    
+    @reactive.effect
+    @reactive.event(input.goto_about)
+    def _():
+        ui.update_navs("tab", selected="About the data explorer")
+
     @reactive.calc
     def filtered_data():
+        # filter for Collection
+        if input.select_collect() == "All":
+            filt_collection = (df_repindata["Collection"]!= "All") | (df_repindata["Collection"].isnull())
+        else:
+            filt_collection = (df_repindata["Collection"].notnull()) & (df_repindata["Collection"].str.contains(input.select_collect()))
+
+
         # filter for the ResourceType
         if input.select_retype() == "All":
-            filt_resourcetype = (lgbtq["ResourceType"]!= "All") | (lgbtq["ResourceType"].isnull())
+            filt_resourcetype = (df_repindata["ResourceType"]!= "All") | (df_repindata["ResourceType"].isnull())
         else:
-            filt_resourcetype = (lgbtq["ResourceType"].notnull()) & (lgbtq["ResourceType"].str.contains(input.select_retype()))
+            filt_resourcetype = (df_repindata["ResourceType"].notnull()) & (df_repindata["ResourceType"].str.contains(input.select_retype()))
         
         # filter for PubYear
-        filt_pubyear = (lgbtq["PubDate"].isnull()) | (lgbtq["PubDate"].between(input.select_pub_year()[0],input.select_pub_year()[1]))
+        filt_pubyear = (df_repindata["PubDate"].isnull()) | (df_repindata["PubDate"].between(input.select_pub_year()[0],input.select_pub_year()[1]))
 
         # filter for Theme
         if input.select_themes() == "All":
-            filt_themes = (lgbtq["Themes"] != "All") | (lgbtq["Themes"].isnull())
+            filt_themes = (df_repindata["Themes"] != "All") | (df_repindata["Themes"].isnull())
         else:
-            filt_themes = (lgbtq["Themes"].notnull()) & (lgbtq["Themes"].str.contains(input.select_themes()))
+            filt_themes = (df_repindata["Themes"].notnull()) & (df_repindata["Themes"].str.contains(input.select_themes()))
 
         # filter for language
         if ''.join(input.select_lang()) == "All":
-            filt_lang = (lgbtq["Language"] != "All") | (lgbtq["Language"].isnull())
+            filt_lang = (df_repindata["Language"] != "All") | (df_repindata["Language"].isnull())
         else:
-            filt_lang = (lgbtq["Language"].notnull()) & (lgbtq["Language"].isin(list(input.select_lang())))
+            filt_lang = (df_repindata["Language"].notnull()) & (df_repindata["Language"].isin(list(input.select_lang())))
         
         # filter for Region
         if ''.join(input.select_region()) == "All":
-            filt_region = (lgbtq["GeographicRegion"] != "All") | (lgbtq["GeographicRegion"].isnull())
+            filt_region = (df_repindata["GeographicRegion"] != "All") | (df_repindata["GeographicRegion"].isnull())
         else:
-            filt_region = (lgbtq["GeographicRegion"].notnull()) & (lgbtq["GeographicRegion"].isin(list(input.select_region())))
+            filt_region = (df_repindata["GeographicRegion"].notnull()) & (df_repindata["GeographicRegion"].isin(list(input.select_region())))
         # free text input
         if input.free_text() == "Enter text...":
-            filt_free = (lgbtq["GeographicRegion"] !="All") | (lgbtq["GeographicRegion"].isnull())
+            filt_free = (df_repindata["GeographicRegion"] !="All") | (df_repindata["GeographicRegion"].isnull())
         else:
-            filt_free = (lgbtq.apply(lambda row: row.astype(str).str.contains(input.free_text()).any(), axis=1))
+            filt_free = (df_repindata.apply(lambda row: row.astype(str).str.contains(input.free_text()).any(), axis=1))
 
-        return lgbtq.loc[filt_resourcetype & filt_themes & filt_region & filt_free & filt_lang & filt_pubyear]
+        return df_repindata.loc[filt_collection & filt_resourcetype & filt_themes & filt_region & filt_free & filt_lang & filt_pubyear]
     
     @render.text
     def selected_entries():
@@ -208,59 +231,60 @@ def server(input, output, session):
         
         return render.DataGrid(filtered_data()[cols], 
                                 selection_mode="row", 
-                                filters=False)
+                                filters=False,
+                                summary=False)
     
 # details on the selected resource
     @render.text
     def grid_detail_description():
         selected = grid_table.data_view(selected=True)["ID"]-1
-        description = lgbtq.loc[selected,"Description"].sum()
+        description = df_repindata.loc[selected,"Description"].sum()
         return description
     
     @render.ui
     def grid_detail_url():
         selected = grid_table.data_view(selected=True)["ID"]-1
-        url = lgbtq.loc[selected,"URL"].sum()
+        url = df_repindata.loc[selected,"URL"].sum()
         return ui.a(f"{url}",href=f"{url}", target="_blank")
     
     @render.ui
     def grid_detail_dates():
         selected = grid_table.data_view(selected=True)["ID"]-1
-        start = lgbtq.loc[selected,"CollectDateStart"].astype(int).sum()
-        end = lgbtq.loc[selected,"CollectDateEnd"].astype(int).sum()
-        span = lgbtq.loc[selected,"TimeSpan"].sum()
-        longitudinal = lgbtq.loc[selected,"Longitudinal"].sum()
+        start = df_repindata.loc[selected,"CollectDateStart"].astype(int).sum()
+        end = df_repindata.loc[selected,"CollectDateEnd"].astype(int).sum()
+        span = df_repindata.loc[selected,"TimeSpan"].sum()
+        longitudinal = df_repindata.loc[selected,"Longitudinal"].sum()
         return ui.div(ui.p(f"Longitudinal? {longitudinal}"),ui.p(f"Data collection: {str(start)} - {str(end)}"), ui.p(f"Temporal coverage: {span}"))
 
     @render.ui
     def grid_detail_geoadmin():
         selected = grid_table.data_view(selected=True)["ID"]-1
-        country = lgbtq.loc[selected,"Country"].sum()
-        region = lgbtq.loc[selected,"GeographicRegion"].sum()
-        admin = lgbtq.loc[selected,"AdminLevel"].sum()
+        country = df_repindata.loc[selected,"Country"].sum()
+        region = df_repindata.loc[selected,"GeographicRegion"].sum()
+        admin = df_repindata.loc[selected,"AdminLevel"].sum()
         return ui.div(ui.p(f"Country: {country}"), ui.p(f"Geographic region: {region}"), ui.p(f"Administrative level: {admin}"))
 
     @render.ui
     def grid_detail_method():
         selected = grid_table.data_view(selected=True)["ID"]-1
-        method = lgbtq.loc[selected,"DataMethodType"].sum()
-        unit = lgbtq.loc[selected,"UnitAnalysis"].sum()
+        method = df_repindata.loc[selected,"DataMethodType"].sum()
+        unit = df_repindata.loc[selected,"UnitAnalysis"].sum()
         return ui.div(ui.p(f"Methods: {method}"),ui.p(f"Unit of analysis: {unit}"))
     
     @render.ui
     def grid_detail_themes():
         selected = grid_table.data_view(selected=True)["ID"]-1
-        themes = lgbtq.loc[selected,"Themes"].sum()
-        subjects = lgbtq.loc[selected,"Subjects"].sum()
+        themes = df_repindata.loc[selected,"Themes"].sum()
+        subjects = df_repindata.loc[selected,"Subjects"].sum()
         return ui.div(ui.p(f"Themes: {themes}"),ui.p(f"Subjects: {subjects}"))
 
     @render.ui
     def grid_detail_further():
         selected = grid_table.data_view(selected=True)["ID"]-1
-        producer = lgbtq.loc[selected,"Producer"].sum()
-        distributor = lgbtq.loc[selected,"Distributor"].sum()
-        restrictions = lgbtq.loc[selected,"Restrictions"].sum()
-        notes = lgbtq.loc[selected,"Notes"].sum()
+        producer = df_repindata.loc[selected,"Producer"].sum()
+        distributor = df_repindata.loc[selected,"Distributor"].sum()
+        restrictions = df_repindata.loc[selected,"Restrictions"].sum()
+        notes = df_repindata.loc[selected,"Notes"].sum()
         return ui.div(ui.p(f"Producer: {producer}"),ui.p(f"Distributor: {distributor}"),ui.p(f"Restrictions? {restrictions}"),ui.p(f"Note: {notes}"))
 
         

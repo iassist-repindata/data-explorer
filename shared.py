@@ -3,17 +3,21 @@ from pathlib import Path
 import pandas as pd
 
 app_dir = Path(__file__).parent
-lgbtq = pd.read_csv(app_dir / "IASSIST_LGBTIQ_Data.txt", delimiter = "\t", dtype={"PubDate":"Int64", "CollectDateStart":"Int64","CollectDateEnd":"Int64"})
+lgbtq = pd.read_csv(app_dir / "data-prep/IASSIST_LGBTIQ_Data.txt", delimiter = "\t", dtype={"PubDate":"Int64", "CollectDateStart":"Int64","CollectDateEnd":"Int64"})
+antir = pd.read_csv("data-prep/IASSIST_Anti_Racism_Data.tsv", delimiter="\t", encoding="utf8", dtype={"PubDate":"Int64", "CollectDateStart":"Int64","CollectDateEnd":"Int64"})
+
 data_dicty = pd.read_csv(app_dir / "data_dictionary.csv", delimiter=";", encoding="utf8")
+
+df_repindata = pd.concat([lgbtq, antir])
 
 # deal with empty cells
 stringcols = {"Title": "<NA>", "URL": "<NA>", "ResourceType": "<NA>", "Citation": "<NA>", "Producer": "<NA>", "Distributor": "<NA>", "Description": "<NA>", "DataMethodType": "<NA>", "Longitudinal": "<NA>", "TimeSpan": "<NA>", "Country": "<NA>", "GeographicRegion": "<NA>", "AdminLevel": "<NA>", "UnitAnalysis": "<NA>", "Language": "<NA>", "Themes": "<NA>", "Subjects": "<NA>", "Restrictions": "<NA>", "Notes": "<NA>", "AddedUpdated":"<NA>"}
-lgbtq = lgbtq.fillna(value=stringcols)
+df_repindata = df_repindata.fillna(value=stringcols)
 
 # add ID column to df
-lgbtq.reset_index(drop=False, inplace=True)
-lgbtq["index"] = lgbtq["index"]+1
-lgbtq.rename(columns={"index":"ID"}, inplace=True)
+df_repindata.reset_index(drop=False, inplace=True)
+df_repindata["index"] = df_repindata["index"]+1
+df_repindata.rename(columns={"index":"ID"}, inplace=True)
 
 #controlled vocabularies (updated 2026-06-02)
 cv_resourceType = ["All","Artwork","Audiovisual","Bibliography","Blog","Book","Book Chapter","Collection","Computational Notebook","Conference Paper","Conference Proceeding","Controlled Vocabulary","Data Dashboard","Data Database","Data Journalism","Data NGO","Data Paper","Data Repository","Dataset","Directory","Dissertation","Event","Finding Aid","Funding Source","Geospatial","Guide and Handbook","Image","Instrument","Interactive Resource","Journal","Journal Article","LibGuide","Manuscript","Map","Model","Network","Oral History","Other","Output Management Plan","Peer Review","Physical Object","Poster","Preprint","Project or Pilot","Report","Scholar or Expert","Service","Social Media","Software","Sound","Standard","Statistics","Study Registration","Text","Website","Workflow"]
@@ -27,14 +31,17 @@ cv_region = ["All","Africa","Northern Africa","Sub-Saharan Africa","Americas","L
 #cv_longitudinal = ["All","Yes","No","Unknown"]
 cv_language = ["All","Abkhazian","Achinese","Acoli","Adangme","Adyghe; Adygei","Afar","Afrihili","Afrikaans","Afro-Asiatic languages","Ainu","Akan","Akkadian","Albanian","Aleut","Algonquian languages","Altaic languages","Amharic","Angika","Apache languages","Arabic","Aragonese","Arapaho","Arawak","Armenian","Aromanian; Arumanian; Macedo-Romanian","Artificial languages","Assamese","Asturian; Bable; Leonese; Asturleonese","Athapascan languages","Australian languages","Austronesian languages","Avaric","Avestan","Awadhi","Aymara","Azerbaijani","Balinese","Baltic languages","Baluchi","Bambara","Bamileke languages","Banda languages","Bantu languages","Basa","Bashkir","Basque","Batak languages","Beja; Bedawiyet","Belarusian","Bemba","Bengali","Berber languages","Bhojpuri","Bihari languages","Bikol","Bini; Edo","Bislama","Blin; Bilin","Blissymbols; Blissymbolics; Bliss","Bokmål, Norwegian; Norwegian Bokmål","Bosnian","Braj","Breton","Buginese","Bulgarian","Buriat","Burmese","Caddo","Catalan; Valencian","Caucasian languages","Cebuano","Celtic languages","Central American Indian languages","Chagatai","Chamic languages","Chamorro","Chechen","Cherokee","Cheyenne","Chibcha","Chichewa; Chewa; Nyanja","Chinese","Chinook jargon","Chipewyan; Dene Suline","Choctaw","Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic","Chuukese","Chuvash","Classical Newari; Old Newari; Classical Nepal Bhasa","Classical Syriac","Coptic","Cornish","Corsican","Cree","Creek","Creoles and pidgins","Creoles and pidgins, English based","Creoles and pidgins, French-based","Creoles and pidgins, Portuguese-based","Crimean Tatar; Crimean Turkish","Croatian","Cushitic languages","Czech","Dakota","Danish","Dargwa","Delaware","Dinka","Divehi; Dhivehi; Maldivian","Dogri","Dogrib","Dravidian languages","Duala","Dutch, Middle (ca.1050-1350)","Flemish","Dutch","Dyula","Dzongkha","Eastern Frisian","Efik","Egyptian (Ancient)","Ekajuk","Elamite","English","","Erzya","Esperanto","Estonian","Ewe","Ewondo","Fang","Fanti","Faroese","Fijian","Filipino","Finnish","Finno-Ugrian languages","Fon","French","French, Middle (ca.1400-1600)","French, Old (842-ca.1400)","Friulian","Fulah","Ga","Gaelic; Scottish Gaelic","Galibi Carib","Galician","Ganda","Gayo","Gbaya","Geez","Georgian","German","German, Middle High (ca.1050-1500)","German, Old High (ca.750-1050)","Germanic languages","Gilbertese","Gondi","Gorontalo","Gothic","Grebo","Greek, Ancient (to 1453)","Greek, Modern (1453-)","Guarani","Gujarati","Gwich'in","Haida","Haitian; Haitian Creole","Hausa","Hawaiian","Hebrew","Herero","Hiligaynon","Himachali languages; Western Pahari languages","Hindi","Hiri Motu","Hittite","Hmong; Mong","Hungarian","Hupa","Iban","Icelandic","Ido","Igbo","Ijo languages","Iloko","Inari Sami","Indic languages","Indo-European languages","Indonesian","Ingush","Interlingua (International Auxiliary Language Association)","Interlingue; Occidental","Inuktitut","Inupiaq","Iranian languages","Irish","Irish, Middle (900-1200)","Irish, Old (to 900)","Iroquoian languages","Italian","Japanese","Javanese","Judeo-Arabic","Judeo-Persian","Kabardian","Kabyle","Kachin; Jingpho","Kalaallisut; Greenlandic","Kalmyk; Oirat","Kamba","Kannada","Kanuri","Kara-Kalpak","Karachay-Balkar","Karelian","Karen languages","Kashmiri","Kashubian","Kawi","Kazakh","Khasi","Khmer","Khoisan languages","Khotanese; Sakan","Kikuyu; Gikuyu","Kimbundu","Kinyarwanda","Kirghiz; Kyrgyz","Klingon; tlhIngan-Hol","Komi","Kongo","Konkani","Korean","Kosraean","Kpelle","Kru languages","Kuanyama; Kwanyama","Kumyk","Kurdish","Kurukh","Kutenai","Ladino","Lahnda","Lamba","Land Dayak languages","Lao","Latin","Latvian","Lezghian","Limburgan; Limburger; Limburgish","Lingala","Lithuanian","Lojban","Low German; Low Saxon; German, Low; Saxon, Low","Lower Sorbian","Lozi","Luba-Katanga","Luba-Lulua","Luiseno","Lule Sami","Lunda","Luo (Kenya and Tanzania)","Lushai","Luxembourgish; Letzeburgesch","Macedonian","Madurese","Magahi","Maithili","Makasar","Malagasy","Malay","Malayalam","Maltese","Manchu","Mandar","Mandingo","Manipuri","Manobo languages","Manx","Maori","Mapudungun; Mapuche","Marathi","Mari","Marshallese","Marwari","Masai","Mayan languages","Mende","Mi'kmaq; Micmac","Minangkabau","Mirandese","Mohawk","Moksha","Mon-Khmer languages","Mongo","Mongolian","Montenegrin","Mossi","Multiple languages","Munda languages","N'Ko","Nahuatl languages","Nauru","Navajo; Navaho","Ndebele, North; North Ndebele","Ndebele, South; South Ndebele","Ndonga","Neapolitan","Nepal Bhasa; Newari","Nepali","Nias","Niger-Kordofanian languages","Nilo-Saharan languages","Niuean","No linguistic content; Not applicable","Nogai","Norse, Old","North American Indian languages","Northern Frisian","Northern Sami","Norwegian","Norwegian Nynorsk; Nynorsk, Norwegian","Nubian languages","Nyamwezi","Nyankole","Nyoro","Nzima","Occitan (post 1500)","Official Aramaic (700-300 BCE); Imperial Aramaic (700-300 BCE)","Ojibwa","Oriya","Oromo","Osage","Ossetian; Ossetic","Otomian languages","Pahlavi","Palauan","Pali","Pampanga; Kapampangan","Pangasinan","Panjabi; Punjabi","Papiamento","Papuan languages","Pedi; Sepedi; Northern Sotho","Persian","Persian, Old (ca.600-400 B.C.)","Philippine languages","Phoenician","Pohnpeian","Polish","Portuguese","Prakrit languages","Provençal, Old (to 1500);Occitan, Old (to 1500)","Pushto; Pashto","Quechua","Rajasthani","Rapanui","Rarotongan; Cook Islands Maori","Reserved for local use","Romance languages","Romanian; Moldavian; Moldovan","Romansh","Romany","Rundi","Russian","Salishan languages","Samaritan Aramaic","Sami languages","Samoan","Sandawe","Sango","Sanskrit","Santali","Sardinian","Sasak","Scots","Selkup","Semitic languages","Serbian","Serer","Shan","Shona","Sichuan Yi; Nuosu","Sicilian","Sidamo","Sign Languages","Siksika","Sindhi","Sinhala; Sinhalese","Sino-Tibetan languages","Siouan languages","Skolt Sami","Slave (Athapascan)","Slavic languages","Slovak","Slovenian","Sogdian","Somali","Songhai languages","Soninke","Sorbian languages","Sotho, Southern","South American Indian languages","Southern Altai","Southern Sami","Spanish; Castilian","Sranan Tongo","Standard Moroccan Tamazight","Sukuma","Sumerian","Sundanese","Susu","Swahili","Swati","Swedish","Swiss German; Alemannic; Alsatian","Syriac","Tagalog","Tahitian","Tai languages","Tajik","Tamashek","Tamil","Tatar","Telugu","Tereno","Tetum","Thai","Tibetan","Tigre","Tigrinya","Timne","Tiv","Tlingit","Tok Pisin","Tokelau","Tonga (Nyasa)","Tonga (Tonga Islands)","Tsimshian","Tsonga","Tswana","Tumbuka","Tupi languages","Turkish","Turkish, Ottoman (1500-1928)","Turkmen","Tuvalu","Tuvinian","Twi","Udmurt","Ugaritic","Uighur; Uyghur","Ukrainian","Umbundu","Uncoded languages","Undetermined","Upper Sorbian","Urdu","Uzbek","Vai","Venda","Vietnamese","Volapük","Votic","Wakashan languages","Walloon","Waray","Washo","Welsh","Western Frisian","Wolaitta; Wolaytta","Wolof","Xhosa","Yakut","Yao","Yapese","Yiddish","Yoruba","Yupik languages","Zande languages","Zapotec","Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki","Zenaga","Zhuang; Chuang","Zulu","Zuni"]
 #cv_restrictions = ["All","Yes","No","Unknown"]
+cv_collection = ["All", "AntiRacism", "LGBTIQ", "Indigenous"]
+
 
 #range for publication date slider
-pub_min = lgbtq["PubDate"].min().astype(int)
-pub_max = lgbtq["PubDate"].max().astype(int)
+pub_min = df_repindata["PubDate"].min().astype(int)
+pub_max = df_repindata["PubDate"].max().astype(int)
 
 # columns for column selector
 cv_columns = ['Title', 
 'URL', 
+'ProDisURL',
 'ResourceType', 
 'Citation', 
 'PubDate',
@@ -55,4 +62,5 @@ cv_columns = ['Title',
 'Subjects',
 'Restrictions',
 'Notes',
+'Collection',
 'AddedUpdated']
