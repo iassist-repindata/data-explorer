@@ -9,6 +9,7 @@ antir = pd.read_csv(app_dir / "data-prep/IASSIST_Anti_Racism_Data.tsv", delimite
 data_dicty = pd.read_csv(app_dir / "data_dictionary.csv", delimiter=";", encoding="utf8")
 
 df_repindata = pd.concat([lgbtq, antir])
+df_repindata.reset_index(drop=True, inplace=True)
 
 # deal with empty cells
 stringcols = {"Title": "<NA>", "URL": "<NA>", "ResourceType": "<NA>", "Citation": "<NA>", "Producer": "<NA>", "Distributor": "<NA>", "Description": "<NA>", "DataMethodType": "<NA>", "Longitudinal": "<NA>", "TimeSpan": "<NA>", "Country": "<NA>", "GeographicRegion": "<NA>", "AdminLevel": "<NA>", "UnitAnalysis": "<NA>", "Language": "<NA>", "Themes": "<NA>", "Subjects": "<NA>", "Restrictions": "<NA>", "Notes": "<NA>", "AddedUpdated":"<NA>"}
